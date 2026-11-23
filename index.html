@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arc Tech | بنحلّل المشكلة ونبني الحل</title>
+<meta name="description" content="Arc Tech شركة برمجيات بتنزل تشوف شغلك، تحلل مشكلتك، وتبنيلك سيستم وموقع مخصوص على قدّك. مش حاجة جاهزة وخلاص.">
+<link rel="icon" type="image/png" href="assets/mark.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script>
+/* set theme before paint to avoid flash */
+(function(){try{var t=localStorage.getItem('arc-theme');document.documentElement.dataset.theme=t==='dark'?'dark':'light';}catch(e){}})();
+</script>
+<style>
+:root, [data-theme="dark"]{
+  --bg:#04101f;
+  --bg2:#071a33;
+  --card:rgba(13,32,58,.55);
+  --card-solid:#0d203a;
+  --line:rgba(56,189,248,.14);
+  --cyan:#22d3ee;
+  --blue:#38bdf8;
+  --deep:#0284c7;
+  --white:#f2f7ff;
+  --mut:#9db4d0;
+  --nav:rgba(4,16,31,.72);
+  --glow1:rgba(34,211,238,.12);
+  --glow2:rgba(2,132,199,.14);
+  --glow3:rgba(56,189,248,.08);
+  --gridline:rgba(56,189,248,.05);
+  --btn-text:#03121f;
+  --shadow:rgba(0,0,0,.4);
+}
+[data-theme="light"]{
+  --bg:#eef4fc;
+  --bg2:#ffffff;
+  --card:rgba(255,255,255,.75);
+  --card-solid:#ffffff;
+  --line:rgba(2,132,199,.18);
+  --cyan:#0284c7;
+  --blue:#0ea5e9;
+  --deep:#0369a1;
+  --white:#0a1830;
+  --mut:#4a617e;
+  --nav:rgba(238,244,252,.8);
+  --glow1:rgba(14,165,233,.14);
+  --glow2:rgba(2,132,199,.12);
+  --glow3:rgba(56,189,248,.12);
+  --gridline:rgba(2,132,199,.07);
+  --btn-text:#f2f9ff;
+  --shadow:rgba(2,60,110,.18);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Cairo',system-ui,sans-serif;
+  background:var(--bg);
+  color:var(--white);
+  overflow-x:hidden;
+  line-height:1.8;
+  transition:background .4s,color .4s;
+}
+::selection{background:var(--cyan);color:var(--btn-text)}
+a{text-decoration:none;color:inherit}
+img{max-width:100%;display:block}
+
+/* ===== background fx ===== */
+.bg-fx{position:fixed;inset:0;z-index:-2;background:
+  radial-gradient(60rem 40rem at 85% -10%, var(--glow1), transparent 60%),
+  radial-gradient(50rem 36rem at -10% 30%, var(--glow2), transparent 60%),
+  radial-gradient(46rem 30rem at 55% 110%, var(--glow3), transparent 60%),
+  var(--bg);transition:background .4s}
+.bg-grid{position:fixed;inset:0;z-index:-1;opacity:.35;pointer-events:none;
+  background-image:linear-gradient(var(--gridline) 1px,transparent 1px),
+  linear-gradient(90deg,var(--gridline) 1px,transparent 1px);
+  background-size:56px 56px;
+  mask-image:radial-gradient(ellipse 90% 60% at 50% 0%,#000 30%,transparent 75%);
+  -webkit-mask-image:radial-gradient(ellipse 90% 60% at 50% 0%,#000 30%,transparent 75%);}
+
+.wrap{max-width:1140px;margin:0 auto;padding:0 24px}
+
+/* ===== nav ===== */
+nav{position:fixed;top:0;right:0;left:0;z-index:50;backdrop-filter:blur(14px);
+  background:var(--nav);border-bottom:1px solid var(--line);transition:background .4s}
+.nav-in{display:flex;align-items:center;justify-content:space-between;height:72px;gap:14px}
+.nav-logo{height:34px;width:auto}
+.logo-dark-img{display:none}
+[data-theme="light"] .logo-img{display:none}
+[data-theme="light"] .logo-dark-img{display:block}
+.nav-links{display:flex;gap:34px;font-weight:600;font-size:.98rem}
+.nav-links a{color:var(--mut);transition:color .25s}
+.nav-links a:hover{color:var(--cyan)}
+.nav-actions{display:flex;align-items:center;gap:12px}
+.theme-btn{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;cursor:pointer;
+  background:rgba(34,211,238,.08);border:1px solid var(--line);color:var(--cyan);transition:transform .25s,background .25s}
+.theme-btn:hover{transform:translateY(-2px);background:rgba(34,211,238,.16)}
+.theme-btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.icon-moon{display:none}
+[data-theme="light"] .icon-sun{display:none}
+[data-theme="light"] .icon-moon{display:block}
+
+.btn{display:inline-flex;align-items:center;gap:10px;font-weight:800;border:none;cursor:pointer;
+  padding:13px 30px;border-radius:14px;font-size:1rem;font-family:inherit;transition:transform .25s,box-shadow .25s}
+.btn-cyan{background:linear-gradient(135deg,var(--cyan),var(--deep));color:var(--btn-text);
+  box-shadow:0 8px 30px var(--glow1)}
+.btn-cyan:hover{transform:translateY(-3px);box-shadow:0 14px 40px var(--glow2)}
+.btn-ghost{background:rgba(34,211,238,.08);color:var(--cyan);border:1px solid rgba(34,211,238,.35)}
+[data-theme="light"] .btn-ghost{background:rgba(2,132,199,.08);border-color:rgba(2,132,199,.35)}
+.btn-ghost:hover{background:rgba(34,211,238,.16);transform:translateY(-3px)}
+.btn-sm{padding:9px 22px;font-size:.92rem}
+
+/* ===== hero ===== */
+.hero{min-height:100svh;display:flex;align-items:center;position:relative;padding:130px 0 70px}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center}
+.badge{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border-radius:100px;
+  border:1px solid rgba(34,211,238,.35);background:rgba(34,211,238,.07);
+  color:var(--cyan);font-weight:700;font-size:.85rem;margin-bottom:26px}
+.badge .dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);
+  box-shadow:0 0 12px var(--cyan);animation:pulse 2s infinite}
+@keyframes pulse{50%{opacity:.4}}
+h1{font-size:clamp(2.3rem,5.4vw,4rem);font-weight:900;line-height:1.35;margin-bottom:22px}
+.grad{background:linear-gradient(120deg,var(--cyan) 10%,var(--blue) 55%,#7dd3fc 90%);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+[data-theme="light"] .grad{background:linear-gradient(120deg,#0369a1 10%,#0ea5e9 60%,#0284c7 90%);
+  -webkit-background-clip:text;background-clip:text}
+.hero p.sub{color:var(--mut);font-size:1.18rem;max-width:32rem;margin-bottom:36px;font-weight:600}
+.hero-ctas{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:44px}
+.chips{display:flex;gap:12px;flex-wrap:wrap}
+.chip{padding:8px 18px;border-radius:100px;background:var(--card);border:1px solid var(--line);
+  font-size:.88rem;font-weight:700;color:var(--mut)}
+.chip b{color:var(--cyan)}
+
+.hero-art{position:relative;display:flex;justify-content:center}
+.gl-stage{position:relative;width:min(480px,92%);aspect-ratio:1;display:grid;place-items:center}
+#gl{width:100%;height:100%;display:block}
+.gl-fallback{position:absolute;inset:0;display:grid;place-items:center;z-index:-1}
+.gl-fallback img{width:55%;opacity:.9;filter:drop-shadow(0 20px 50px var(--glow1))}
+.fcard{position:absolute;padding:12px 18px;border-radius:16px;background:var(--card);
+  border:1px solid var(--line);backdrop-filter:blur(10px);font-weight:800;font-size:.85rem;
+  box-shadow:0 16px 40px var(--shadow);animation:float 6s ease-in-out infinite;z-index:2}
+.fcard small{display:block;color:var(--mut);font-weight:600;font-size:.72rem}
+.fc1{top:9%;right:-2%;animation-delay:.6s}
+.fc2{bottom:14%;left:-4%;animation-delay:1.4s}
+.fc3{bottom:-2%;right:16%;animation-delay:2.2s}
+.fc1 b,.fc2 b,.fc3 b{color:var(--cyan)}
+@keyframes float{50%{transform:translateY(-16px)}}
+
+/* ===== sections ===== */
+section{padding:96px 0;position:relative}
+.kicker{color:var(--cyan);font-weight:800;font-size:.92rem;letter-spacing:.5px;margin-bottom:12px;display:block}
+h2{font-size:clamp(1.7rem,3.6vw,2.6rem);font-weight:900;margin-bottom:16px;line-height:1.5}
+.lead{color:var(--mut);max-width:44rem;font-size:1.08rem;font-weight:600;margin-bottom:54px}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:22px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:34px 28px;
+  backdrop-filter:blur(8px);transition:transform .3s,border-color .3s,box-shadow .3s;position:relative;overflow:hidden}
+.card::before{content:"";position:absolute;inset:0 0 auto;height:3px;
+  background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:0;transition:opacity .3s}
+.card:hover{transform:translateY(-8px);border-color:rgba(34,211,238,.45);
+  box-shadow:0 24px 60px var(--glow2)}
+.card:hover::before{opacity:1}
+.icon{width:58px;height:58px;border-radius:16px;display:grid;place-items:center;margin-bottom:22px;
+  background:linear-gradient(135deg,rgba(34,211,238,.18),rgba(2,132,199,.10));
+  border:1px solid rgba(34,211,238,.3)}
+.icon svg{width:28px;height:28px;stroke:var(--cyan);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.card h3{font-size:1.22rem;font-weight:800;margin-bottom:10px}
+.card p{color:var(--mut);font-size:.98rem;font-weight:600}
+
+/* ===== process ===== */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:22px}
+.step{position:relative;padding:38px 26px 30px;border-radius:22px;background:var(--card);
+  border:1px solid var(--line);transition:transform .3s,border-color .3s}
+.step:hover{transform:translateY(-6px);border-color:rgba(34,211,238,.4)}
+.step .num{font-size:3rem;font-weight:900;line-height:1;
+  background:linear-gradient(135deg,var(--cyan),rgba(2,132,199,.25));
+  -webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:16px}
+.step h3{font-size:1.14rem;font-weight:800;margin-bottom:8px}
+.step p{color:var(--mut);font-size:.95rem;font-weight:600}
+
+/* ===== work ===== */
+.work-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:22px}
+.wcard{position:relative;border-radius:22px;overflow:hidden;border:1px solid var(--line);
+  background:linear-gradient(160deg,var(--bg2),var(--bg));padding:36px 28px;min-height:210px;
+  display:flex;flex-direction:column;justify-content:flex-end;transition:transform .3s,border-color .3s}
+.wcard:hover{transform:translateY(-8px);border-color:rgba(34,211,238,.45)}
+.wcard .glyph{position:absolute;top:26px;left:26px;opacity:.9}
+.wcard .glyph svg{width:44px;height:44px;stroke:var(--cyan);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.wcard h3{font-size:1.15rem;font-weight:800;margin-bottom:6px}
+.wcard p{color:var(--mut);font-size:.92rem;font-weight:600}
+.note{margin-top:26px;color:var(--mut);font-size:.88rem;font-weight:600;display:flex;gap:8px;align-items:center}
+.note svg{width:16px;height:16px;stroke:var(--cyan);fill:none;stroke-width:2;flex-shrink:0}
+
+/* ===== why ===== */
+.why{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px}
+.why-c{display:flex;gap:18px;padding:28px;border-radius:20px;background:var(--card);border:1px solid var(--line)}
+.why-c .check{width:44px;height:44px;flex-shrink:0;border-radius:12px;display:grid;place-items:center;
+  background:rgba(34,211,238,.12);border:1px solid rgba(34,211,238,.3)}
+.check svg{width:22px;height:22px;stroke:var(--cyan);fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.why-c h3{font-size:1.08rem;font-weight:800;margin-bottom:6px}
+.why-c p{color:var(--mut);font-size:.93rem;font-weight:600}
+
+/* ===== cta ===== */
+.cta-box{position:relative;border-radius:30px;overflow:hidden;text-align:center;
+  padding:80px 30px;border:1px solid rgba(34,211,238,.3);
+  background:radial-gradient(40rem 20rem at 50% -20%,var(--glow1),transparent 60%),
+  linear-gradient(160deg,var(--bg2),var(--bg))}
+.cta-box img{width:210px;margin:0 auto 30px;filter:drop-shadow(0 10px 30px var(--glow1))}
+.cta-box h2{margin-bottom:14px}
+.cta-box p{color:var(--mut);font-weight:600;max-width:34rem;margin:0 auto 36px}
+.cta-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.phone{display:inline-block;margin-top:30px;font-size:1.5rem;font-weight:900;letter-spacing:2px;color:var(--cyan);direction:ltr}
+
+/* ===== footer ===== */
+footer{border-top:1px solid var(--line);padding:34px 0;text-align:center;color:var(--mut);font-size:.9rem;font-weight:600}
+footer img{height:26px;width:auto;margin:0 auto 12px;opacity:.9}
+
+/* ===== reveal ===== */
+.rv{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+.rv.on{opacity:1;transform:none}
+
+@media(max-width:880px){
+  .nav-links{display:none}
+  .hero-grid{grid-template-columns:1fr;text-align:center}
+  .hero p.sub{margin-inline:auto}
+  .hero-ctas,.chips{justify-content:center}
+  .hero-art{margin-top:30px}
+  .fc1{right:0}.fc2{left:0}
+}
+</style>
+</head>
+<body>
+<div class="bg-fx"></div>
+<div class="bg-grid"></div>
+
+<nav>
+  <div class="wrap nav-in">
+    <a href="#top">
+      <img class="nav-logo logo-img" src="assets/logo.png" alt="Arc Tech">
+      <img class="nav-logo logo-dark-img" src="assets/logo-dark.png" alt="Arc Tech">
+    </a>
+    <div class="nav-links">
+      <a href="#services">خدماتنا</a>
+      <a href="#process">إزاي بنشتغل</a>
+      <a href="#work">شغلنا</a>
+      <a href="#why">ليه Arc Tech</a>
+    </div>
+    <div class="nav-actions">
+      <button class="theme-btn" id="themeBtn" type="button" aria-label="تبديل الوضع الليلي والنهاري" title="الوضع الليلي / النهاري">
+        <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.9 4.9 1.4 1.4"/><path d="m17.7 17.7 1.4 1.4"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m4.9 19.1 1.4-1.4"/><path d="m17.7 6.3 1.4-1.4"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      </button>
+      <a class="btn btn-cyan btn-sm" href="#contact">كلّمنا</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="badge"><span class="dot"></span> شركة برمجيات بتحلّل وتبني</span>
+      <h1>بنحلّل المشكلة…<br><span class="grad">ونبني الحل</span><br><span class="grad">على قدّك.</span></h1>
+      <p class="sub">Arc Tech بتقعد معاك الأول، تنزل تشوف مشكلتك بعينيها، وبعدين تبنيلك سيستم وموقع مخصوص لشغلك بالظبط. مش حاجة جاهزة وخلاص.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-cyan" href="https://wa.me/201288114906" target="_blank" rel="noopener">ابدأ مشروعك
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m11 18-6-6 6-6"/></svg>
+        </a>
+        <a class="btn btn-ghost" href="#services">شوف خدماتنا</a>
+      </div>
+      <div class="chips">
+        <span class="chip"><b>تحليل ميداني</b> في مكانك</span>
+        <span class="chip"><b>سيستم مخصوص</b> 100%</span>
+        <span class="chip"><b>توفير وقت</b> حقيقي</span>
+        <span class="chip"><b>دعم</b> مستمر</span>
+      </div>
+    </div>
+    <div class="hero-art">
+      <div class="gl-stage">
+        <div class="gl-fallback"><img src="assets/mark.png" alt=""></div>
+        <canvas id="gl"></canvas>
+        <div class="fcard fc1"><b>+وقت</b><small>بنوفرهولك</small></div>
+        <div class="fcard fc2"><b>سيستم مخصوص</b><small>على قد شغلك</small></div>
+        <div class="fcard fc3"><b>زيارة ميدانية</b><small>بنشوف مشكلتك</small></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="services">
+  <div class="wrap">
+    <span class="kicker rv">خدماتنا</span>
+    <h2 class="rv">كل اللي شغلك محتاجه، <span class="grad">في مكان واحد.</span></h2>
+    <p class="lead rv">من أول ما نفهم مشكلتك لحد ما نسلّمك حل شغّال، إيدنا معاك في كل خطوة.</p>
+    <div class="cards">
+      <div class="card rv">
+        <div class="icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 9h18"/><path d="M8 21h8"/><path d="M12 18v3"/></svg></div>
+        <h3>مواقع ويب مخصصة</h3>
+        <p>موقع سريع وشيك يعبّر عن شغلك ويبيع عنك، معمول من الصفر على هويتك مش قالب جاهز.</p>
+      </div>
+      <div class="card rv">
+        <div class="icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></div>
+        <h3>أنظمة إدارة متكاملة</h3>
+        <p>سيستم واحد يدير العمليات كلها: مبيعات، مخزون، موظفين، حسابات وتقارير لحظية.</p>
+      </div>
+      <div class="card rv">
+        <div class="icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/><path d="M11 8v3l2 2"/></svg></div>
+        <h3>تحليل ودراسة في موقعك</h3>
+        <p>بننزل نشوف شغلك بعينينا ونحلل المشكلة بجد قبل ما نكتب سطر كود واحد.</p>
+      </div>
+      <div class="card rv">
+        <div class="icon"><svg viewBox="0 0 24 24"><path d="m16 18 6-6-6-6"/><path d="m8 6-6 6 6 6"/></svg></div>
+        <h3>حلول مفصّلة مش جاهزة</h3>
+        <p>كل سطر معمول على مقاس شغلك بالظبط، عشان يوفرلك وقت كبير وراحة دماغ.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="process" style="background:linear-gradient(180deg,transparent,var(--glow3),transparent)">
+  <div class="wrap">
+    <span class="kicker rv">إزاي بنشتغل</span>
+    <h2 class="rv">أربع خطوات <span class="grad">وتشوف الفرق.</span></h2>
+    <p class="lead rv">طريقتنا بسيطة وواضحة: نفهم الأول، وبعدين نبني.</p>
+    <div class="steps">
+      <div class="step rv"><div class="num">01</div><h3>بنسمعك وننزل نشوف</h3><p>زيارة ميدانية لشغلك، نشوف المشكلة بعينينا ونفهم دورة العمل كلها.</p></div>
+      <div class="step rv"><div class="num">02</div><h3>نحلل ونصمم</h3><p>نحلل كل التفاصيل ونرسم حل مخصوص على قدّ احتياجك بالظبط.</p></div>
+      <div class="step rv"><div class="num">03</div><h3>نبني ونطوّر</h3><p>فريقنا يبني السيستم أو الموقع بأحدث التقنيات، وانت متابع كل خطوة.</p></div>
+      <div class="step rv"><div class="num">04</div><h3>نسلّم وندعم</h3><p>تسليم كامل وتدريب على الاستخدام، ودعم مستمر بعدها مش بنسيبك.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="work">
+  <div class="wrap">
+    <span class="kicker rv">شغلنا</span>
+    <h2 class="rv">إيه نوع الحلول <span class="grad">اللي بنبنيها؟</span></h2>
+    <p class="lead rv">كل مشروع بيبدأ من مشكلة حقيقية عند عميل، وبيخلص بسيستم بيشتغل مكانه.</p>
+    <div class="work-grid">
+      <div class="wcard rv">
+        <span class="glyph"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m7 15 4-6 4 3 5-8"/></svg></span>
+        <h3>لوحات تحكم وتقارير</h3>
+        <p>أرقام شغلك كلها قدامك لحظة بلحظة، عشان تقرر بسرعة وصح.</p>
+      </div>
+      <div class="wcard rv">
+        <span class="glyph"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a15 15 0 0 1 0 18"/><path d="M12 3a15 15 0 0 0 0 18"/></svg></span>
+        <h3>مواقع شركات ومتاجر</h3>
+        <p>حضور أونلاين محترف يجيبلك عملاء ويخلي شغلك باين بأحسن صورة.</p>
+      </div>
+      <div class="wcard rv">
+        <span class="glyph"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 13h18"/></svg></span>
+        <h3>أنظمة حجز ومخزون</h3>
+        <p>إدارة حجوزات ومخزون وعمليات من غير ورق ولا إكسل ولا دوشة.</p>
+      </div>
+      <div class="wcard rv">
+        <span class="glyph"><svg viewBox="0 0 24 24"><path d="M12 2v4"/><path d="M12 18v4"/><path d="M2 12h4"/><path d="M18 12h4"/><circle cx="12" cy="12" r="5"/></svg></span>
+        <h3>أتمتة الشغل اليدوي</h3>
+        <p>اللي بياخد منك ساعات على إكسل وواتساب، بيخلص في ثواني لوحده.</p>
+      </div>
+    </div>
+    <p class="note rv"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v5"/><path d="M12 16h.01"/></svg> دي أمثلة على نوع الحلول اللي بنقدمها، وكل مشروع بيتفصّل على احتياج العميل.</p>
+  </div>
+</section>
+
+<section id="why" style="background:linear-gradient(180deg,transparent,var(--glow3),transparent)">
+  <div class="wrap">
+    <span class="kicker rv">ليه Arc Tech</span>
+    <h2 class="rv">مش بنبيعك سيستم… <span class="grad">بنحلّك مشكلة.</span></h2>
+    <p class="lead rv">الفرق بينا وبين أي حد تاني إننا بنبدأ من عندك انت، مش من عندنا.</p>
+    <div class="why">
+      <div class="why-c rv"><span class="check"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><div><h3>بننزل لحد عندك</h3><p>مش بنكتفي بمكالمة، بنيجي نشوف مشكلتك في مكانها ونفهم شغلك من جواه.</p></div></div>
+      <div class="why-c rv"><span class="check"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><div><h3>مفيش حاجة جاهزة</h3><p>كل حل معمول مخصوص ليك، على قدّ شغلك واحتياجك، مش قالب متكرر للكل.</p></div></div>
+      <div class="why-c rv"><span class="check"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><div><h3>وقتك أهم حاجة</h3><p>هدفنا نوفرلك ساعات شغل كل يوم، ونديك راحة دماغ من الروتين اليدوي.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="cta-box rv">
+      <img class="logo-img" src="assets/logo.png" alt="Arc Tech">
+      <img class="logo-dark-img" src="assets/logo-dark.png" alt="Arc Tech" style="margin-inline:auto">
+      <h2>جاهز توفّر وقتك؟<br><span class="grad">كلّمنا دلوقتي.</span></h2>
+      <p>احكيلنا مشكلتك، واحنا ننزل نشوفها ونرجعلك بالحل. أول خطوة مكالمة واحدة.</p>
+      <div class="cta-btns">
+        <a class="btn btn-cyan" href="https://wa.me/201288114906" target="_blank" rel="noopener">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.5 0 1.47 1.07 2.9 1.22 3.1.15.2 2.11 3.22 5.1 4.51.71.31 1.27.49 1.7.63.72.23 1.37.2 1.88.12.57-.09 1.76-.72 2.01-1.42.25-.7.25-1.29.17-1.42-.07-.13-.27-.2-.57-.35M12.04 2C6.56 2 2.1 6.45 2.1 11.93c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22c5.48 0 9.93-4.45 9.93-9.93A9.86 9.86 0 0 0 12.04 2"/></svg>
+          واتساب
+        </a>
+        <a class="btn btn-ghost" href="tel:+201288114906">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          اتصل بينا
+        </a>
+      </div>
+      <span class="phone">0128 811 4906</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <img src="assets/mark.png" alt="Arc Tech">
+    <div>© 2026 Arc Tech. كل الحقوق محفوظة.</div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.152.2/three.min.js"></script>
+<script>
+/* ===== scroll reveal ===== */
+const io = new IntersectionObserver((es)=>{
+  es.forEach((e)=>{ if(e.isIntersecting){ e.target.classList.add('on'); io.unobserve(e.target);} });
+},{threshold:.12});
+document.querySelectorAll('.rv').forEach((el,i)=>{ el.style.transitionDelay = (i%4)*90 + 'ms'; io.observe(el); });
+
+/* ===== theme toggle ===== */
+const rootEl = document.documentElement;
+document.getElementById('themeBtn').addEventListener('click', ()=>{
+  const next = rootEl.dataset.theme === 'light' ? 'dark' : 'light';
+  rootEl.dataset.theme = next;
+  try{ localStorage.setItem('arc-theme', next); }catch(e){}
+});
+
+/* ===== three.js hero scene ===== */
+(function(){
+  if (typeof THREE === 'undefined') return;
+  const canvas = document.getElementById('gl');
+  const stage = canvas.parentElement;
+  let renderer;
+  try{
+    renderer = new THREE.WebGLRenderer({canvas, alpha:true, antialias:true});
+  }catch(e){ return; }
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(45, 1, .1, 100);
+  camera.position.set(0, 0, 7.5);
+
+  scene.add(new THREE.AmbientLight(0x38bdf8, .5));
+  const p1 = new THREE.PointLight(0x22d3ee, 60, 40); p1.position.set(4, 4, 5); scene.add(p1);
+  const p2 = new THREE.PointLight(0x0284c7, 40, 40); p2.position.set(-5, -3, 3); scene.add(p2);
+
+  /* core: faceted icosahedron */
+  const core = new THREE.Mesh(
+    new THREE.IcosahedronGeometry(1.55, 0),
+    new THREE.MeshStandardMaterial({color:0x0a2a4a, metalness:.85, roughness:.25, flatShading:true, emissive:0x062033, emissiveIntensity:.6})
+  );
+  scene.add(core);
+
+  /* wireframe shell */
+  const shell = new THREE.Mesh(
+    new THREE.IcosahedronGeometry(2.15, 1),
+    new THREE.MeshBasicMaterial({color:0x22d3ee, wireframe:true, transparent:true, opacity:.34})
+  );
+  scene.add(shell);
+
+  /* orbiting ring */
+  const ring = new THREE.Mesh(
+    new THREE.TorusGeometry(2.9, .012, 8, 140),
+    new THREE.MeshBasicMaterial({color:0x38bdf8, transparent:true, opacity:.55})
+  );
+  ring.rotation.x = Math.PI * .42;
+  scene.add(ring);
+  const ring2 = ring.clone();
+  ring2.scale.setScalar(1.14);
+  ring2.rotation.x = Math.PI * .55;
+  ring2.rotation.y = .5;
+  ring2.material = ring.material.clone();
+  ring2.material.opacity = .25;
+  scene.add(ring2);
+
+  /* particle field */
+  const N = 900;
+  const pos = new Float32Array(N * 3);
+  for (let i = 0; i < N; i++){
+    const r = 3.4 + Math.random() * 3.2;
+    const th = Math.random() * Math.PI * 2;
+    const ph = Math.acos(2 * Math.random() - 1);
+    pos[i*3]   = r * Math.sin(ph) * Math.cos(th);
+    pos[i*3+1] = r * Math.sin(ph) * Math.sin(th) * .7;
+    pos[i*3+2] = r * Math.cos(ph);
+  }
+  const pGeo = new THREE.BufferGeometry();
+  pGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  const points = new THREE.Points(pGeo, new THREE.PointsMaterial({color:0x67e8f9, size:.035, transparent:true, opacity:.85}));
+  scene.add(points);
+
+  /* mouse parallax */
+  let tx = 0, ty = 0, mx = 0, my = 0;
+  window.addEventListener('pointermove', (e)=>{
+    tx = (e.clientX / window.innerWidth - .5) * .6;
+    ty = (e.clientY / window.innerHeight - .5) * .45;
+  }, {passive:true});
+
+  function resize(){
+    const w = stage.clientWidth, h = stage.clientHeight;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+  resize();
+  new ResizeObserver(resize).observe(stage);
+
+  const clock = new THREE.Clock();
+  (function tick(){
+    const t = clock.getElapsedTime();
+    mx += (tx - mx) * .04;
+    my += (ty - my) * .04;
+    core.rotation.y = t * .35 + mx * 1.4;
+    core.rotation.x = Math.sin(t * .4) * .12 + my * 1.1;
+    shell.rotation.y = -t * .18 + mx * .8;
+    shell.rotation.z = t * .07;
+    ring.rotation.z = t * .25;
+    ring2.rotation.z = -t * .18;
+    points.rotation.y = t * .05 + mx * .4;
+    core.position.y = Math.sin(t * .9) * .12;
+    shell.position.y = core.position.y;
+    camera.position.x = mx * .8;
+    camera.position.y = -my * .6;
+    camera.lookAt(0, 0, 0);
+    renderer.render(scene, camera);
+    requestAnimationFrame(tick);
+  })();
+})();
+</script>
+</body>
+</html>
